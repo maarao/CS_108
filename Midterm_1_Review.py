@@ -39,7 +39,7 @@ PRIMITIVES ARE NOT MUTABLE -> MUST BE ASSIGNED TO A NEW VARIABLE
 '''
 from datclasses import dataclass
 
-@datclass
+@dataclass
 '''
 
 # check to make sure its calling a function w/ parenthesis() and not a variable
