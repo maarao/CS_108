@@ -87,6 +87,9 @@ assert_equal(hash_text("A", 11, 100), 51)
 
 def main():
     """
+    The main function of the program
+    Handles the interaction with the user to utilize the function to either encrypt a text
+    or play a hash-guessing game
     """
     answer = input("Input your desired action: ")
     if answer == "encrypt":
