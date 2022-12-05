@@ -241,23 +241,45 @@ char.
 if TEST:
     assert_equal(strip_message('AaZz\n. ,?'), 'AaZz\n. ,?')
     assert_equal(strip_message('2190!@#$-=+<>;":_'), '')
+    # My Tests
+    assert_equal(strip_message("3289723497"), "")
+    assert_equal(strip_message("!^&@&@^A"), "A")
+    assert_equal(strip_message("!^&@&@^A123123123"), "A")
+
     assert_equal(prepare_message("I once had a dog"), "I_ONCE_HAD_A_DOG___")
     assert_equal(prepare_message("I  once    had   a    dog"), "I_ONCE_HAD_A_DOG___")
     assert_equal(prepare_message("I  once    had\n   a       dog"), "I_ONCE_HAD\n_A_DOG___")
+    # My Tests
+    assert_equal(prepare_message("This is cool"), "THIS_IS_COOL___")
+    assert_equal(prepare_message("This     is     cool"), "THIS_IS_COOL___")
+    assert_equal(prepare_message("Im     having     fun!"), "IM_HAVING_FUN!___")
+
     # Jackson
     assert_equal(prepare_message('This should be line 1\n this should be line 2'),
                  'THIS_SHOULD_BE_LINE_1\n_THIS_SHOULD_BE_LINE_2___')
+    # My Tests
+    assert_equal(prepare_message("One line\nAnother line"), "ONE_LINE\nANOTHER_LINE___")
+    assert_equal(prepare_message(" So does this work\n Here is a space"), "SO_DOES_THIS_WORK\n_HERE_IS_A_SPACE___")
+    assert_equal(prepare_message("ALL CAPS"), "ALL_CAPS___")
 
     color1 = (255, 255, 255)
     assert_equal(put_one_char_in_colors(color1, 'A'), (255, 250, 250))
     assert_equal(put_one_char_in_colors(color1, '?'), (255, 255, 251))
     assert_equal(put_one_char_in_colors(color1, 'Z'), (255, 254, 251))
     assert_equal(put_one_char_in_colors(color1, '_'), (255, 255, 250))
+    # My Test
+    assert_equal(put_one_char_in_colors(color1, 'B'), (255, 250, 251))
+    assert_equal(put_one_char_in_colors(color1, 'C'), (255, 250, 252))
+    assert_equal(put_one_char_in_colors(color1, 'D'), (255, 250, 253))
 
     assert_equal(get_char_from_color((255, 250, 250)), 'A')
     assert_equal(get_char_from_color((0, 5, 1)), '?')
     assert_equal(get_char_from_color((0, 5, 0)), '_')
     assert_equal(get_char_from_color((55, 254, 251)), 'Z')
+    # My Test
+    assert_equal(get_char_from_color((0, 0, 0)), "A")
+    assert_equal(get_char_from_color((0, 0, 1)), "B")
+    assert_equal(get_char_from_color((0, 0, 2)), "C")
 
     for i in range(0, 256, 5):
         color = (i, i, i)
@@ -268,11 +290,21 @@ if TEST:
         for c in 'AZ':
             color = put_one_char_in_colors(color, c)
             assert_equal(get_char_from_color(color), c)
+        # My Tests
+        assert_equal(get_char_from_color(put_one_char_in_colors((0, 0, 0), "A")), "A")
+        assert_equal(get_char_from_color(put_one_char_in_colors((0, 0, 0), "?")), "?")
+        assert_equal(get_char_from_color(put_one_char_in_colors((0, 0, 0), "_")), "_")
+
 
     assert_equal(strip_message("Hey!"), "Hey")
     assert_equal(strip_message("Test: 'quote?'"), "Test quote?")
     assert_equal(strip_message("This should all work."), "This should all work.")
     assert_equal(strip_message("Un@ccept@ble Str!ng"), "Uncceptble Strng")
+
+    # My Test
+    assert_equal(strip_message("@!#$"), "")
+    assert_equal(strip_message("ASD"), "ASD")
+    assert_equal(strip_message("asd4"), "asd")
 
 
     def compare(im1, im2):
@@ -303,7 +335,7 @@ if TEST:
     pixels0[0, 1] = (0, 5, 0)
     pixels0[1, 1] = (0, 5, 0)
     pixels0[2, 1] = (0, 5, 0)
-    assert_equal(compare(image0, image1), False) # Almost certain this is supposed to be False
+    assert_equal(compare(image0, image1), False) # Almost certain this is supposed to be False. Would only be true if we called prepare_message() on the message.
     image0 = Image.new('RGB', (3, 2), (0, 0, 0))
     image0.save('temp.png')
     with open('msg.txt', 'w') as ofile:
@@ -316,7 +348,7 @@ if TEST:
     pixels0[0, 1] = (0, 5, 0)
     pixels0[1, 1] = (0, 5, 0)
     pixels0[2, 1] = (0, 5, 0)
-    assert_equal(compare(image0, new_im1), False) # Almost certain this is also supposed to be False
+    assert_equal(compare(image0, new_im1), False) # Almost certain this is supposed to be False. Would only be true if we called prepare_message() on the message.
     image0 = Image.new('RGB', (6, 1), (0, 0, 0))
     image0.save('temp.png')
     with open('msg.txt', 'w') as ofile:
@@ -339,5 +371,5 @@ if TEST:
         ofile.write("A" * (500 * 500 - 3))
         ofile.write('___')
     new_im4 = encode('msg4.txt', 'temp4.png')
-    #assert_equal(restore_msg(get_msg_from_image(new_im4)), 'A' * (250000 - 3))
+    assert_equal(restore_msg(get_msg_from_image(new_im4)), 'A' * (250000 - 3))
 
