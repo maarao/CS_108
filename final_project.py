@@ -108,16 +108,17 @@ message.
     """
     message = ""
     count_underscores = 0
-    for x in range(image1.width):
-        for y in range(image1.height):
+    for y in range(image1.height):
+        for x in range(image1.width):
             char = get_char_from_color(image1.getpixel((x, y)))
             if char == "_":
                 count_underscores += 1
+                message += " "
             else:
                 message += char
                 count_underscores = 0
             if count_underscores >= 3:
-                return message
+                return message[:-3]
     print("ERROR: Not Terminated properly")
 
 
@@ -157,11 +158,12 @@ def put_all_chars_in_image(image1, msg):
     Returns the image
     """
     count = 0
-    for x in range(image1.width):
-        for y in range(image1.height):
+    for y in range(image1.height):
+        for x in range(image1.width):
             image1.putpixel((x, y), put_one_char_in_colors(image1.getpixel((x, y)), msg[count]))
             count += 1
-    return image1
+            if count == len(msg):
+                return image1
 
 
 def get_message_from_file(message_file_name):
@@ -335,7 +337,7 @@ if TEST:
     pixels0[0, 1] = (0, 5, 0)
     pixels0[1, 1] = (0, 5, 0)
     pixels0[2, 1] = (0, 5, 0)
-    assert_equal(compare(image0, image1), False) # Almost certain this is supposed to be False. Would only be true if we called prepare_message() on the message.
+    assert_equal(compare(image0, image1), True)
     image0 = Image.new('RGB', (3, 2), (0, 0, 0))
     image0.save('temp.png')
     with open('msg.txt', 'w') as ofile:
@@ -348,7 +350,7 @@ if TEST:
     pixels0[0, 1] = (0, 5, 0)
     pixels0[1, 1] = (0, 5, 0)
     pixels0[2, 1] = (0, 5, 0)
-    assert_equal(compare(image0, new_im1), False) # Almost certain this is supposed to be False. Would only be true if we called prepare_message() on the message.
+    assert_equal(compare(image0, new_im1), True)
     image0 = Image.new('RGB', (6, 1), (0, 0, 0))
     image0.save('temp.png')
     with open('msg.txt', 'w') as ofile:
